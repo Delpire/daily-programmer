@@ -1,21 +1,14 @@
-
+#Return original message padded up to the next multiple of 512.
 def pad(result, mLength):
 
     multiple = int(size/512)
-
-    print(len(result))
 
     #Add a 1 to the end.
     if len(result) < (512 * multiple + 448):
         result.extend([1])
 
-    print(len(result))
-
-    #Add 0's up to 448 over the multiple of 512.
+    #Add 0's up to the size of the original message in bits under the next multiple of 512.
     result.extend([0 for i in range(len(result), 512 * (multiple + 1) - len(mLength))])
-
-    print(len(result))
-    print(len(mLength))
           
     result.extend([int(bit) for bit in mLength])
 
@@ -25,7 +18,7 @@ plaintext = "Hiccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 result = []
 
-messageLength = len(plaintext)
+messageLength = len(plaintext)sss
 
 #Convert the plaintext into binary and store it in an array.
 for char in plaintext:
