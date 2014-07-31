@@ -50,7 +50,7 @@
 					<form>
 						Pattern: 	<input id="pattern" type="text" name="Pattern" value="LRRRL"><br>
 						Ticks: 		<input id="ticks" type="text" name="Ticks" value="100000"><br>
-						Speed: 		<input id="speed" type="range" name="Speed" min="0" max="50"><br>
+						Speed: 		<input id="speed" type="range" name="Speed" min="0.1" max="50"><br>
 					</form>
 					<button onclick="newRun()">Run</button>
 				</div>
@@ -135,11 +135,11 @@
 		
 		function newRun(){
 			
+			isDone = true;
+			
 			pattern = document.getElementById("pattern").value;
 			ticks = document.getElementById("ticks").value;
 			speed = document.getElementById("speed").value;
-			
-			isDone = true;
 			
 			drawGrid();
 			
