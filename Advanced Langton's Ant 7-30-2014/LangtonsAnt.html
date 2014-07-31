@@ -50,7 +50,7 @@
 					<form>
 						Pattern: 	<input id="pattern" type="text" name="Pattern" value="LRRRL"><br>
 						Ticks: 		<input id="ticks" type="text" name="Ticks" value="100000"><br>
-						Speed: 		<input id="speed" type="range" name="Speed" min="0" max="25"><br>
+						Speed: 		<input id="speed" type="range" name="Speed" min="0" max="50"><br>
 					</form>
 					<button onclick="newRun()">Run</button>
 				</div>
@@ -68,7 +68,7 @@
 		colors = [ ];
 		colorDir = [ ];
 		directions = [ "N", "E", "S", "W" ];
-		ant = { x:50, y:50, direction:0 };
+		ant = { x:60, y:75, direction:0 };
 		isDone = false;
 		
 		function drawGrid(){
