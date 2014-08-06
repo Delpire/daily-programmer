@@ -1,0 +1,35 @@
+	html,body {
+		height:100%;
+		margin:0px;
+		font-family:Arial;
+	}
+	.header {
+		background-color:#BEBEC2;
+		width:100%;
+		height:10%;
+		padding:5px;
+	}
+	.headerInner {
+		background-color:#F0F0F0;
+	}
+	.leftColumn {
+		background-color:#BEBEC2;
+		width:20%;
+		height:90%;
+		float:left;
+		padding:5px;
+	
+	}
+	.leftColumnInner {
+		background-color:#F0F0F0;
+	}
+	.rightColumn {
+		background-color:#BEBEC2;
+		width:calc(80% - 20px);
+		height:90%;
+		float:left;
+		padding:5px;
+	}
+	.rightColumnInner {
+		background-color:#F0F0F0;
+	}

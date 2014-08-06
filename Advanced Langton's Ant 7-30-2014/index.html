@@ -1,0 +1,31 @@
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	</head>
+	<body onload="drawGrid()">
+		<div class="header">
+			<div class="headerInner">
+			<h1>Chris Delpire's Advanced Langton's Ant Simulation</h1>
+			</div>
+		</div>
+		<div>
+			<div class="leftColumn">
+				<div class="leftColumnInner">
+				
+					<form>
+						Pattern: 	<input id="pattern" type="text" name="Pattern" value="LRRRL"><br>
+						Ticks: 		<input id="ticks" type="text" name="Ticks" value="100000"><br>
+						Speed: 		<input id="speed" type="range" name="Speed" min="0.1" max="50"><br>
+					</form>
+					<button onclick="newRun()">Run</button>
+				</div>
+			</div>
+			<div class="rightColumn">
+				<div class="">
+					<canvas id="grid" width="750" height="750"></canvas>
+				</div>
+			</div>
+		</div>
+	<script src="./langtonsant.js"></script>
+	</body>
+</html>

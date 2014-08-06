@@ -1,69 +1,4 @@
-<html>
-	<style>
-	
-	html,body {
-		height:100%;
-		margin:0px;
-		font-family:Arial;
-	}
-	.header {
-		background-color:#BEBEC2;
-		width:100%;
-		height:10%;
-		padding:5px;
-	}
-	.headerInner {
-		background-color:#F0F0F0;
-	}
-	.leftColumn {
-		background-color:#BEBEC2;
-		width:20%;
-		height:90%;
-		float:left;
-		padding:5px;
-	
-	}
-	.leftColumnInner {
-		background-color:#F0F0F0;
-	}
-	.rightColumn {
-		background-color:#BEBEC2;
-		width:calc(80% - 20px);
-		height:90%;
-		float:left;
-		padding:5px;
-	}
-	.rightColumnInner {
-		background-color:#F0F0F0;
-	}
-	</style>
-	<body onload="drawGrid()">
-		<div class="header">
-			<div class="headerInner">
-			<h1>Chris Delpire's Advanced Langton's Ant Simulation</h1>
-			</div>
-		</div>
-		<div>
-			<div class="leftColumn">
-				<div class="leftColumnInner">
-				
-					<form>
-						Pattern: 	<input id="pattern" type="text" name="Pattern" value="LRRRL"><br>
-						Ticks: 		<input id="ticks" type="text" name="Ticks" value="100000"><br>
-						Speed: 		<input id="speed" type="range" name="Speed" min="0.1" max="50"><br>
-					</form>
-					<button onclick="newRun()">Run</button>
-				</div>
-			</div>
-			<div class="rightColumn">
-				<div class="">
-					<canvas id="grid" width="750" height="750"></canvas>
-				</div>
-			</div>
-		</div>
-	<script>
-	
-		board = [];
+board = [];
 		colorArray = [ "#23332E", "#F0F5F5", "#62062B", "#DAB42B", "#FB223F", "#4B796F", "#C4B999" ];
 		colors = [ ];
 		colorDir = [ ];
@@ -102,11 +37,11 @@
 		
 			for(i = 0; i < ticks; i++){
 			
-				setTimeout(function(){
+				//setTimeout(function(){
 				
-				if(isDone){
+				if(isDone || ant.x < 0 || ant.y < 0){
 					isDone = true;
-					return;
+					break;
 				}
 				
 				color = board[ant.x][ant.y];
@@ -114,13 +49,6 @@
 				board[ant.x][ant.y] = (color + 1) % colors.length;
 				dir = colorDir[color];
 				ant.direction = (ant.direction + dir + 4) % 4;
-				ctx.beginPath();
-				ctx.rect(ant.y*5,ant.x*5,5,5);
-				ctx.fillStyle= newColor
-				ctx.fill();
-				ctx.lineWidth="1";
-				ctx.strokeStyle = "grey";
-				ctx.stroke();
 				if(directions[ant.direction] == "N")
 					ant.x = ant.x - 1;
 				else if(directions[ant.direction] == "E")
@@ -129,8 +57,22 @@
 					ant.x = ant.x + 1;
 				else
 					ant.y = ant.y - 1;
-				}, speed * i);
+				//}, speed * i);
 			}
+			
+			for (i = 0; i < 200; i++) { 
+				
+				for (j = 0; j < 200; j++) {
+					ctx.beginPath();
+					ctx.rect(j*5,i*5,5,5);
+					ctx.fillStyle= colorArray[board[i][j]];
+					ctx.lineWidth="1";
+					ctx.fill();
+					ctx.strokeStyle = "grey";
+					ctx.stroke();
+				}
+			}
+			
 		}
 		
 		function newRun(){
@@ -162,6 +104,3 @@
 			run();
 		
 		}
-	</script>
-	</body>
-</html>
