@@ -30,6 +30,25 @@ def pad(result, messageLength):
 
     return result
 
+def functionOne():
+
+    for i in range(0,32): F.append((B[i] & C[i]) | (~B[i] & D[i]))
+    K = [0,1,1,0,1,1,1,0,1,1,0,1,1,0,0,1,1,1,1,0,10,1,1,1,0,1,0,0,0,0,1]
+
+
+h0 = [0,1,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1]
+h1 = [1,1,1,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1]
+h2 = [1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,0]
+h3 = [0,0,0,1,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1,1,0,1,1,0]
+h4 = [1,1,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0]
+A = []
+B = []
+C = []
+D = []
+F = []
+K = []
+print(h0)
+
 plaintext = "A Test";
 
 #Convert the plaintext into binary.
@@ -45,22 +64,59 @@ if binaryLength % 512 != 0:
 multiples = int(len(result) / 512)
 
 print(multiples)
-print(result[0:512])
-words = [[] for y in range(80)]
+words = [[] for y in range(16)]
 
 #Break the binary up into 512 blocks.
-for i in range(0, multiples):
+for chunkIndex in range(0, multiples):
 
     #Break each block up into sixteen 32-bit words.
     for j in range(0, 16):
-        words[j] = result[i*512 + j*32:(i*512 + j*32) + 32]
-        print(words[j])
+        words[j] = result[chunkIndex*512 + j*32:(chunkIndex*512 + j*32) + 32]
 
-    for j in range(16,80):
-        words[j-3]
-        words[j-8]
-        words[j-14]
-        words[j-16]
+    for x in range(16,80):
+
+        xorResult = []
+
+        #XOR the x-3 word with the x-8 word. 
+        for i in range(0,32): xorResult.append(words[x-3][i] ^ words[x-8][i])
+    
+        #XOR the resulting word with the x-14 word.
+        for i in range(0,32): xorResult[i] = xorResult[i] ^ words[x-14][i]
+
+        #XOR the resulting word with the x-16 word.
+        for i in range(0,32): xorResult[i] = xorResult[i] ^ words[x-16][i]
+
+        #Rotate left
+        xorResult = xorResult[1:]
+        xorResult.append(0)
+
+        #Add new work to the end of the list of words.
+        words.append(xorResult)
+
+    A = h0
+    B = h1
+    C = h2
+    D = h3
+    E = h4
+
+    for x in range(0,80):
+        if(x < 20):
+            functionOne()
+        elif(x < 39):
+            functionTwo()
+        elif(x < 59):
+            functionThree()
+        else:
+            functionFour()
+
+        for r in range(0, 5)   
+            A = A[1:]
+            A.append(0)
+
+    
+        
+            
+    print(len(words))    
 
 print(len(result))
 
