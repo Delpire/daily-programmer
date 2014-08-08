@@ -41,11 +41,10 @@ B = []
 C = []
 D = []
 E = []
-F = []
 K = []
-print(h0)
 
-plaintext = "A Test";
+plaintext = input("Enter password: ")
+#plaintext = "Found the kittens! They're on someone else's property so I don't physically have them yet, but I can take pictures and stuff for everyone soon. Hmu about it";
 
 #Convert the plaintext into binary.
 result = convertToBin(plaintext)
@@ -59,15 +58,14 @@ if binaryLength % 512 != 0:
 
 multiples = int(len(result) / 512)
 
-print(multiples)
-words = [[] for y in range(16)]
-
 #Break the binary up into 512 blocks.
 for chunkIndex in range(0, multiples):
 
+    words = [[] for y in range(16)]
+
     #Break each block up into sixteen 32-bit words.
-    for j in range(0, 16):
-        words[j] = result[chunkIndex*512 + j*32:(chunkIndex*512 + j*32) + 32]
+    for x in range(0, 16):
+        words[x] = result[chunkIndex*512 + x*32:(chunkIndex*512 + x*32) + 32]
 
     for x in range(16,80):
 
@@ -83,8 +81,9 @@ for chunkIndex in range(0, multiples):
         for i in range(0,32): xorResult[i] = xorResult[i] ^ words[x-16][i]
 
         #Rotate left
+        overflow = xorResult[0]
         xorResult = xorResult[1:]
-        xorResult.append(0)
+        xorResult.append(overflow)
 
         #Add new work to the end of the list of words.
         words.append(xorResult)
@@ -95,41 +94,93 @@ for chunkIndex in range(0, multiples):
     D = h3
     E = h4
 
-    for x in range(0,1):
-        if(x < 20):
+    for x in range(0,80):
+
+        F = []
+        
+        if x < 20:
             for i in range(0,32): F.append((B[i] & C[i]) | (~B[i] & D[i]))
             K = [0,1,0,1,1,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,1,1,0,0,1,1,0,0,1]
-        elif(x < 39):
-            functionTwo()
-        elif(x < 59):
-            functionThree()
+        elif x < 40:
+            for i in range(0,32): F.append(B[i] ^ C[i] ^ D[i])
+            K = [0,1,1,0,1,1,1,0,1,1,0,1,1,0,0,1,1,1,1,0,1,0,1,1,1,0,1,0,0,0,0,1]
+        elif x < 60:
+            for i in range(0,32): F.append((B[i] & C[i]) | (B[i] & D[i]) | (C[i] & D[i]))
+            K = [1,0,0,0,1,1,1,1,0,0,0,1,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,1,1,1,0,0]
         else:
-            functionFour()
+            for i in range(0,32): F.append(B[i] ^ C[i] ^ D[i])
+            K = [1,1,0,0,1,0,1,0,0,1,1,0,0,0,1,0,1,1,0,0,0,0,0,1,1,1,0,1,0,1,1,0]
 
         rotA = A
         temp = []
 
         for r in range(0, 5):
+            overflow = rotA[0]
             rotA = rotA[1:]
-            rotA.append(0)
+            rotA.append(overflow)
 
-        print(A)
-        print(rotA)
-        print(F)
-        print(E)
-        print(K)
-        print(words[x])
-        print(temp)
-
-        tempString = str(bin(int(''.join(str(i) for i in rotA),2) + int(''.join(str(i) for i in F),2) + int(''.join(str(i) for i in K),2) + int(''.join(str(i) for i in words[x]),2))[2:])
-
+        tempString = str(bin(int(''.join(str(i) for i in rotA),2) + int(''.join(str(i) for i in F),2) + int(''.join(str(i) for i in E),2) + int(''.join(str(i) for i in K),2) + int(''.join(str(i) for i in words[x]),2))[2:])
         temp.extend([int(bit) for bit in tempString])
-        print(temp)
-        
-        
-            
 
-print(len(result))
+        diff = len(temp) - 32
+        if diff > 0: temp = temp[diff:]
+
+        rotB = B
+
+        for r in range(0, 30):
+            overflow = rotB[0]
+            rotB = rotB[1:]
+            rotB.append(overflow)
+
+        E = D
+        D = C
+        C = rotB
+        B = A
+        A = temp
+        
+    h0String = str(bin(int(''.join(str(i) for i in h0),2) + int(''.join(str(i) for i in A),2))[2:])
+    h1String = str(bin(int(''.join(str(i) for i in h1),2) + int(''.join(str(i) for i in B),2))[2:])
+    h2String = str(bin(int(''.join(str(i) for i in h2),2) + int(''.join(str(i) for i in C),2))[2:])
+    h3String = str(bin(int(''.join(str(i) for i in h3),2) + int(''.join(str(i) for i in D),2))[2:])
+    h4String = str(bin(int(''.join(str(i) for i in h4),2) + int(''.join(str(i) for i in E),2))[2:])
+
+    h0 = []
+    h1 = []
+    h2 = []
+    h3 = []
+    h4 = []
+    
+    h0.extend([int(bit) for bit in h0String])
+    h1.extend([int(bit) for bit in h1String])
+    h2.extend([int(bit) for bit in h2String])
+    h3.extend([int(bit) for bit in h3String])
+    h4.extend([int(bit) for bit in h4String])
+
+    diff = len(h0) - 32
+    if diff > 0: h0 = h0[diff:]
+    diff = len(h1) - 32
+    if diff > 0: h1 = h1[diff:]
+    diff = len(h2) - 32
+    if diff > 0: h2 = h2[diff:]
+    diff = len(h3) - 32
+    if diff > 0: h3 = h3[diff:]
+    diff = len(h4) - 32
+    if diff > 0: h4 = h4[diff:]
+
+h0String = str(hex(int(''.join(str(i) for i in h0),2))[2:])
+h1String = str(hex(int(''.join(str(i) for i in h1),2))[2:])
+h2String = str(hex(int(''.join(str(i) for i in h2),2))[2:])
+h3String = str(hex(int(''.join(str(i) for i in h3),2))[2:])
+h4String = str(hex(int(''.join(str(i) for i in h4),2))[2:])
+
+h0String = '00000000'[len(h0String):] + h0String
+h1String = '00000000'[len(h1String):] + h1String
+h2String = '00000000'[len(h2String):] + h2String
+h3String = '00000000'[len(h3String):] + h3String
+h4String = '00000000'[len(h4String):] + h4String
+
+print(h0String + h1String + h2String + h3String + h4String)
+
 
 
 
