@@ -30,11 +30,6 @@ def pad(result, messageLength):
 
     return result
 
-def functionOne():
-
-    for i in range(0,32): F.append((B[i] & C[i]) | (~B[i] & D[i]))
-    K = [0,1,1,0,1,1,1,0,1,1,0,1,1,0,0,1,1,1,1,0,10,1,1,1,0,1,0,0,0,0,1]
-
 
 h0 = [0,1,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1]
 h1 = [1,1,1,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1]
@@ -45,6 +40,7 @@ A = []
 B = []
 C = []
 D = []
+E = []
 F = []
 K = []
 print(h0)
@@ -99,9 +95,10 @@ for chunkIndex in range(0, multiples):
     D = h3
     E = h4
 
-    for x in range(0,80):
+    for x in range(0,1):
         if(x < 20):
-            functionOne()
+            for i in range(0,32): F.append((B[i] & C[i]) | (~B[i] & D[i]))
+            K = [0,1,0,1,1,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,1,1,0,0,1,1,0,0,1]
         elif(x < 39):
             functionTwo()
         elif(x < 59):
@@ -109,14 +106,28 @@ for chunkIndex in range(0, multiples):
         else:
             functionFour()
 
-        for r in range(0, 5)   
-            A = A[1:]
-            A.append(0)
+        rotA = A
+        temp = []
 
-    
+        for r in range(0, 5):
+            rotA = rotA[1:]
+            rotA.append(0)
+
+        print(A)
+        print(rotA)
+        print(F)
+        print(E)
+        print(K)
+        print(words[x])
+        print(temp)
+
+        tempString = str(bin(int(''.join(str(i) for i in rotA),2) + int(''.join(str(i) for i in F),2) + int(''.join(str(i) for i in K),2) + int(''.join(str(i) for i in words[x]),2))[2:])
+
+        temp.extend([int(bit) for bit in tempString])
+        print(temp)
+        
         
             
-    print(len(words))    
 
 print(len(result))
 
