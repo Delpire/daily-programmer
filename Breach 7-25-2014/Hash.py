@@ -1,4 +1,4 @@
-#Returns an array of a binary converted from a string.
+#Converts a string to binary and returns the result in an array.
 def convertToBin(string):
 
     result = []
@@ -14,23 +14,25 @@ def convertToBin(string):
     return result
 
 
-#Return original message padded up to the next multiple of 512.
+#Pads array of bits up to a multiple of 512.
 def pad(result, messageLength):
 
-    multiple = int(binaryLength/512)
+    #Determine how many times 512 fits into the length of the bit array.
+    multiples = int(binaryLength / 512)
 
-    #Add a 1 to the end.
-    if len(result) < (512 * multiple + 448):
-        result.extend([1])
+    #Add one to the end.
+    result.extend([1])
 
-    #Add 0's up to the size of the original message in bits under the next multiple of 512.
-    result.extend([0 for i in range(len(result), 512 * (multiple + 1) - len(messageLength))])
-          
+    while len(result) % 512 != 448: result.extend([0])
+
+    while (len(result) + len(messageLength)) % 512 != 0: result.extend([0])
+
+    #Add the length of the message in bits to the end of the array.      
     result.extend([int(bit) for bit in messageLength])
 
     return result
 
-
+#SHA-1 h0-h4. These are part of the SHA-1 algorithm's 
 h0 = [0,1,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1]
 h1 = [1,1,1,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1]
 h2 = [1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,0]
@@ -43,20 +45,21 @@ D = []
 E = []
 K = []
 
-plaintext = input("Enter password: ")
-#plaintext = "Found the kittens! They're on someone else's property so I don't physically have them yet, but I can take pictures and stuff for everyone soon. Hmu about it";
+plaintext = "test"
 
-#Convert the plaintext into binary.
+#Convert the plaintext into binary
 result = convertToBin(plaintext)
 
 #Get the length of the message converted to binary.
 binaryLength = len(result)
 
-#If the length is not a multiple of 512 then pad the message.
-if binaryLength % 512 != 0:
-    result = pad(result, bin(binaryLength)[2:])
+print(binaryLength)
 
-multiples = int(len(result) / 512)
+result = pad(result, bin(binaryLength)[2:])
+
+multiples = int(len(result) / 512)    
+
+print(len(result))
 
 #Break the binary up into 512 blocks.
 for chunkIndex in range(0, multiples):
@@ -155,6 +158,12 @@ for chunkIndex in range(0, multiples):
     h2.extend([int(bit) for bit in h2String])
     h3.extend([int(bit) for bit in h3String])
     h4.extend([int(bit) for bit in h4String])
+
+    while len(h0) < 32: h0.insert(0,0)
+    while len(h1) < 32: h1.insert(0,0)
+    while len(h2) < 32: h2.insert(0,0)
+    while len(h3) < 32: h3.insert(0,0)
+    while len(h4) < 32: h4.insert(0,0)
 
     diff = len(h0) - 32
     if diff > 0: h0 = h0[diff:]
