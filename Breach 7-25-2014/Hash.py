@@ -1,17 +1,28 @@
-#Converts a string to binary and returns the result in an array.
-def convertToBin(string):
+#!/usr/bin/env python3
 
-    result = []
+# SHA-1 H0-H4 variables. These are part of the SHA-1 algorithm's 
+H0 = [0,1,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1]
+H1 = [1,1,1,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1]
+H2 = [1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,0]
+H3 = [0,0,0,1,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1,1,0,1,1,0]
+H4 = [1,1,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0]
 
-    for char in string:
-        #Converts the character into a bit.
-        bits = bin(ord(char))[2:]
-        #Adds zeros to make the number 8 bits long.
-        bits = '00000000'[len(bits):] + bits
-        #Adds the bits to the array.
-        result.extend([int(bit) for bit in bits])
+def convert_to_bin(plaintext):
+    """Converts a string to binary and returns the result in an array.
 
-    return result
+    :param plaintext: a plaintext string
+    :returns: an array of int representing a bit string.
+    """
+
+    bit_array = []
+
+    # Converts the string to binary, pads it to an 8 bit string, and converts to an array.
+    for char in plaintext:
+        bit_string = bin(ord(char))[2:]
+        bit_string = '00000000'[len(bit_string):] + bit_string
+        bit_array.extend([int(bit) for bit in bit_string])
+
+    return bit_array
 
 
 #Pads array of bits up to a multiple of 512.
@@ -32,12 +43,7 @@ def pad(result, messageLength):
 
     return result
 
-#SHA-1 h0-h4. These are part of the SHA-1 algorithm's 
-h0 = [0,1,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1]
-h1 = [1,1,1,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1]
-h2 = [1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,0]
-h3 = [0,0,0,1,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1,1,0,1,1,0]
-h4 = [1,1,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0]
+
 A = []
 B = []
 C = []
@@ -48,18 +54,16 @@ K = []
 plaintext = "test"
 
 #Convert the plaintext into binary
-result = convertToBin(plaintext)
+result = convert_to_bin(plaintext)
 
 #Get the length of the message converted to binary.
 binaryLength = len(result)
 
-print(binaryLength)
-
+#Pad the result up to a multiple of 512 while adding the length of the string to the end.
 result = pad(result, bin(binaryLength)[2:])
 
+#Determine how many times 512 goes into the result. The result will be broken into chunks of 512.
 multiples = int(len(result) / 512)    
-
-print(len(result))
 
 #Break the binary up into 512 blocks.
 for chunkIndex in range(0, multiples):
@@ -91,11 +95,11 @@ for chunkIndex in range(0, multiples):
         #Add new work to the end of the list of words.
         words.append(xorResult)
 
-    A = h0
-    B = h1
-    C = h2
-    D = h3
-    E = h4
+    A = H0
+    B = H1
+    C = H2
+    D = H3
+    E = H4
 
     for x in range(0,80):
 
@@ -141,54 +145,54 @@ for chunkIndex in range(0, multiples):
         B = A
         A = temp
         
-    h0String = str(bin(int(''.join(str(i) for i in h0),2) + int(''.join(str(i) for i in A),2))[2:])
-    h1String = str(bin(int(''.join(str(i) for i in h1),2) + int(''.join(str(i) for i in B),2))[2:])
-    h2String = str(bin(int(''.join(str(i) for i in h2),2) + int(''.join(str(i) for i in C),2))[2:])
-    h3String = str(bin(int(''.join(str(i) for i in h3),2) + int(''.join(str(i) for i in D),2))[2:])
-    h4String = str(bin(int(''.join(str(i) for i in h4),2) + int(''.join(str(i) for i in E),2))[2:])
+    H0String = str(bin(int(''.join(str(i) for i in H0),2) + int(''.join(str(i) for i in A),2))[2:])
+    H1String = str(bin(int(''.join(str(i) for i in H1),2) + int(''.join(str(i) for i in B),2))[2:])
+    H2String = str(bin(int(''.join(str(i) for i in H2),2) + int(''.join(str(i) for i in C),2))[2:])
+    H3String = str(bin(int(''.join(str(i) for i in H3),2) + int(''.join(str(i) for i in D),2))[2:])
+    H4String = str(bin(int(''.join(str(i) for i in H4),2) + int(''.join(str(i) for i in E),2))[2:])
 
-    h0 = []
-    h1 = []
-    h2 = []
-    h3 = []
-    h4 = []
+    H0 = []
+    H1 = []
+    H2 = []
+    H3 = []
+    H4 = []
     
-    h0.extend([int(bit) for bit in h0String])
-    h1.extend([int(bit) for bit in h1String])
-    h2.extend([int(bit) for bit in h2String])
-    h3.extend([int(bit) for bit in h3String])
-    h4.extend([int(bit) for bit in h4String])
+    H0.extend([int(bit) for bit in H0String])
+    H1.extend([int(bit) for bit in H1String])
+    H2.extend([int(bit) for bit in H2String])
+    H3.extend([int(bit) for bit in H3String])
+    H4.extend([int(bit) for bit in H4String])
 
-    while len(h0) < 32: h0.insert(0,0)
-    while len(h1) < 32: h1.insert(0,0)
-    while len(h2) < 32: h2.insert(0,0)
-    while len(h3) < 32: h3.insert(0,0)
-    while len(h4) < 32: h4.insert(0,0)
+    while len(H0) < 32: H0.insert(0,0)
+    while len(H1) < 32: H1.insert(0,0)
+    while len(H2) < 32: H2.insert(0,0)
+    while len(H3) < 32: H3.insert(0,0)
+    while len(H4) < 32: H4.insert(0,0)
 
-    diff = len(h0) - 32
-    if diff > 0: h0 = h0[diff:]
-    diff = len(h1) - 32
-    if diff > 0: h1 = h1[diff:]
-    diff = len(h2) - 32
-    if diff > 0: h2 = h2[diff:]
-    diff = len(h3) - 32
-    if diff > 0: h3 = h3[diff:]
-    diff = len(h4) - 32
-    if diff > 0: h4 = h4[diff:]
+    diff = len(H0) - 32
+    if diff > 0: H0 = H0[diff:]
+    diff = len(H1) - 32
+    if diff > 0: H1 = H1[diff:]
+    diff = len(H2) - 32
+    if diff > 0: H2 = H2[diff:]
+    diff = len(H3) - 32
+    if diff > 0: H3 = H3[diff:]
+    diff = len(H4) - 32
+    if diff > 0: H4 = H4[diff:]
 
-h0String = str(hex(int(''.join(str(i) for i in h0),2))[2:])
-h1String = str(hex(int(''.join(str(i) for i in h1),2))[2:])
-h2String = str(hex(int(''.join(str(i) for i in h2),2))[2:])
-h3String = str(hex(int(''.join(str(i) for i in h3),2))[2:])
-h4String = str(hex(int(''.join(str(i) for i in h4),2))[2:])
+H0String = str(hex(int(''.join(str(i) for i in H0),2))[2:])
+H1String = str(hex(int(''.join(str(i) for i in H1),2))[2:])
+H2String = str(hex(int(''.join(str(i) for i in H2),2))[2:])
+H3String = str(hex(int(''.join(str(i) for i in H3),2))[2:])
+H4String = str(hex(int(''.join(str(i) for i in H4),2))[2:])
 
-h0String = '00000000'[len(h0String):] + h0String
-h1String = '00000000'[len(h1String):] + h1String
-h2String = '00000000'[len(h2String):] + h2String
-h3String = '00000000'[len(h3String):] + h3String
-h4String = '00000000'[len(h4String):] + h4String
+H0String = '00000000'[len(H0String):] + H0String
+H1String = '00000000'[len(H1String):] + H1String
+H2String = '00000000'[len(H2String):] + H2String
+H3String = '00000000'[len(H3String):] + H3String
+H4String = '00000000'[len(H4String):] + H4String
 
-print(h0String + h1String + h2String + h3String + h4String)
+print(H0String + H1String + H2String + H3String + H4String)
 
 
 
