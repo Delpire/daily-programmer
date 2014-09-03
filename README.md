@@ -3,6 +3,7 @@ daily-programmer
 This is the repository that keeps all of my /r/daily-programmer challenges.
 
 Challenges Completed
+====================
 
 Langton's Ant - 7/30/2014
 
