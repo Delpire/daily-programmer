@@ -4,9 +4,7 @@ import wave
 import struct
 import math
 
-convert_to_morse = [ '.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....', '..', '.---',
-                      '-.-', '.-..', '--', '-.', '---', '.--.', '--.-', '.-.', '...', '-',
-                      '..-', '...-', '.--', '-..-', '-.--', '--..' ]
+convert_to_morse = [ '-----', '.---', '..---', '...--', '....-', '.....', '-....', '--...', '---..', '----.', '.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....', '..', '.---', '-.-', '.-..', '--', '-.', '---', '.--.', '--.-', '.-.', '...', '-', '..-', '...-', '.--', '-..-', '-.--', '--..' ]
 
 def convert_to_morse_code(plaintext):
   """Converts a plaintext string into morse code.
@@ -19,9 +17,15 @@ def convert_to_morse_code(plaintext):
   for char in plaintext:
     if char == ' ':
       converted_input += '/ '
-    else:
-      index = ord(char.upper()) - 65
+    elif char.isalpha():
+      index = ord(char.upper()) - 55
       converted_input += convert_to_morse[index] + " "
+    else:
+      try:
+        index = int(char)
+        converted_input += convert_to_morse[index] + " "
+      except:
+        print("Invalid character entered.")
 
   return converted_input
   
