@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 import re;
 import sys;
 
 #Ratios for unit conversion.
-ratios = [[1, 39.3701, 0.000621371, 32.4077929, 0, 0, 0, 0], 
-            [0.0254, 1, 0.0000157828, 0.82315794, 0, 0, 0, 0], 
+ratios = [[1, 39.3701, 0.000621371, 32.4077929, 0, 0, 0, 0],
+            [0.0254, 1, 0.0000157828, 0.82315794, 0, 0, 0, 0],
             [1609.34, 63360, 1, 52155.287, 0, 0, 0, 0],
             [0.0308567758, 1.21483369, 0.0000191735116, 1, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0.0625, 0.0283495, 0.00006432688],
@@ -49,7 +51,7 @@ if toUnit not in units:
     else:
         toUnitIndex = fullUnits.index(toUnit);
 else:
-    toUnitIndex = units.index(toUnit);   
+    toUnitIndex = units.index(toUnit);
 
 #Exit if unit cannot be converted.
 if ratios[fromUnitIndex][toUnitIndex] == 0:
