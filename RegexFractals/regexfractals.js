@@ -25,25 +25,35 @@ function PrintArray(){
 	}
 }
 
-function drawGrid(){
+function drawGrid(pattern){
 	
 	var grid = document.getElementById("grid");
 	var ctx=grid.getContext("2d");
+	
+	gridSize = 512;
+	pixelSize = gridSize / pixel;
 	
 		for (i = 0; i < pixel; i++) {
 			
 			for (j = 0; j < pixel; j++) {
 				
-				ctx.rect(i*5,j*5,5,5);
-			
+			  ctx.beginPath();
+				ctx.rect(i*pixelSize,j*pixelSize,pixelSize,pixelSize);
+				
+				if(pattern.test(pixel_array[i][j])){
+				  ctx.fillStyle= "#FFFFFF";
+				}
+				else{
+				  ctx.fillStyle= "#000000";
+				}
+				
+				
+				//ctx.lineWidth="1";
+				ctx.fill();
+				//ctx.strokeStyle = "grey";
+				//ctx.stroke();
 			}
 		}
-	
-	ctx.fillStyle="#23332E";
-	ctx.fill();
-	ctx.lineWidth="1";
-	ctx.strokeStyle = "grey";
-	ctx.stroke();
 }
 
 function SplitQuadrant(start_x, end_x, start_y, end_y){
@@ -82,12 +92,14 @@ function SplitQuadrant(start_x, end_x, start_y, end_y){
 
 $(function(){
 
-	pixel = 8
+	pixel = 256
 
 	pixel_array = []
+	
+	pattern = /.*1(.*)/
 
 	InitializeArray();
 	SplitQuadrant(0, pixel, 0, pixel);
 	PrintArray();
-
+  drawGrid(pattern);
 })
