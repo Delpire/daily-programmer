@@ -37,7 +37,7 @@ function drawGrid(pattern){
 			
 			for (j = 0; j < pixel; j++) {
 				
-			  ctx.beginPath();
+			  	ctx.beginPath();
 				ctx.rect(i*pixelSize,j*pixelSize,pixelSize,pixelSize);
 				
 				if(pattern.test(pixel_array[i][j])){
@@ -47,11 +47,7 @@ function drawGrid(pattern){
 				  ctx.fillStyle= "#000000";
 				}
 				
-				
-				//ctx.lineWidth="1";
 				ctx.fill();
-				//ctx.strokeStyle = "grey";
-				//ctx.stroke();
 			}
 		}
 }
@@ -90,16 +86,20 @@ function SplitQuadrant(start_x, end_x, start_y, end_y){
 
 }
 
+
+//Function starts when the page is loaded. This
+//will initialize the array, split the quadrant,
+//and draw the grid.
 $(function(){
 
-	pixel = 256
+	//Initial pixel amount and pattern.
+	pixel = 512;
+	pattern = /.*(13|33|24|42).*/;
+	pixel_array = [];
 
-	pixel_array = []
-	
-	pattern = /.*1(.*)/
 
 	InitializeArray();
 	SplitQuadrant(0, pixel, 0, pixel);
 	PrintArray();
-  drawGrid(pattern);
+  	drawGrid(pattern);
 })
