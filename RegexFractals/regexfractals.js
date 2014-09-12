@@ -94,7 +94,7 @@ $(function(){
 
 	//Initial pixel amount and pattern.
 	pixel = 512;
-	pattern = /.*(13|33|24|42).*/;
+	pattern = /.*(12|13|44).*/;
 	pixel_array = [];
 
 
